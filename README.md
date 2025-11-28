@@ -4,7 +4,7 @@ A lightweight, observable LLM API proxy with built-in tracing for OpenAI, Anthro
 
 ## Why this exists
 
-Native OAuth passthrough for the Big 3 agentic CLIs (Claude Code, OpenAI Codex, QuixiAI Gemini CLI fork). You log in with your normal plan; the proxy does not require or manage API keys, and simply forwards traffic while tracing it.
+Native OAuth passthrough for the Big 3 agentic CLIs (Claude Code, OpenAI Codex, Gemini CLI). You log in with your normal plan; the proxy does not require or manage API keys, and simply forwards traffic while tracing it.
 
 ## Features
 
@@ -26,7 +26,7 @@ Perfect for:
 
 ## Compatibility
 
-Scoped to: Claude Code, OpenAI Codex, and the QuixiAI fork of Gemini CLI (with `--proxy`). These work because they use distinct API paths and support OAuth passthrough. Other clients such as open-code, continue.dev, rooCode, cline, or local runtimes (vLLM/sglang/ollama/lmstudio/llamacpp) are untested/unsupported.
+Scoped to: Claude Code, OpenAI Codex, and the QuixiAI fork of Gemini CLI (with `--`). These work because they use distinct API paths and support OAuth passthrough. Other clients such as open-code, continue.dev, rooCode, cline, or local runtimes (vLLM/sglang/ollama/lmstudio/llamacpp) are untested/unsupported.
 
 ## Prerequisites
 
@@ -36,8 +36,8 @@ Scoped to: Claude Code, OpenAI Codex, and the QuixiAI fork of Gemini CLI (with `
 
 1. **Clone and navigate to the project**:
    ```sh
-   git clone <your-repo-url>
-   cd logging
+   git clone https://github.com/QuixiAI/VibeLogger.git
+   cd VibeLogger
    ```
 
 2. **Start the services (Daemon Mode)**:
@@ -121,38 +121,14 @@ codex
 
 ### Gemini CLI
 
-Standard Gemini CLI tools don't natively support proxies well. Use the [QuixiAI fork of gemini-cli](https://github.com/QuixiAI/gemini-cli) which adds the `--proxy` flag.
+Standard Gemini CLI tools don't natively support proxies well. Use the [QuixiAI fork of gemini-cli](https://github.com/QuixiAI/gemini-cli) which adds the `--base` flag.
 
 ```sh
-# Install the fork (Node.js)
+# Install gemini-cli
 npm install -g github:QuixiAI/gemini-cli
 
-# Run with proxy flag
-gemini --proxy http://localhost:8082 "Hello world"
-```
-
-### Standard SDK Usage
-
-**OpenAI Python SDK**
-```python
-client = OpenAI(
-    base_url="http://localhost:8082/v1"
-)
-```
-
-**Anthropic Python SDK**
-```python
-client = Anthropic(
-    base_url="http://localhost:8082"
-)
-```
-
-**Google Generative AI SDK**
-```python
-genai.configure(
-    transport="rest",
-    client_options={"api_endpoint": "http://localhost:8082"}
-)
+# Run with --base-url flag
+gemini --base-url http://localhost:8082 "Hello world"
 ```
 
 ## Architecture
@@ -195,73 +171,9 @@ View traces in the Phoenix UI at http://localhost:6006 to analyze:
 - Response latencies
 - Full conversation flows
 
-## Development
-
-### Running Locally (without Docker)
-
-```sh
-# Install dependencies (using uv, or pip install the dependencies listed in proxy.py)
-uv pip install aiohttp arize-phoenix-otel opentelemetry-api opentelemetry-sdk pyyaml
-
-# Set environment variables
-export COLLECTOR_ENDPOINT="http://localhost:6006/v1/traces"
-
-# Run the proxy
-python proxy.py
-```
-
-### Project Structure
-
-```
-.
-├── proxy.py           # Main proxy implementation
-├── config.yaml        # Configuration file
-├── docker-compose.yml # Docker Compose setup
-├── Dockerfile         # Proxy container definition
-└── README.md          # This file
-```
-
-## Security Considerations
-
-⚠️ **Important**: This proxy logs full request and response bodies for observability. This includes:
-- Authentication headers (filtered by default)
-- User prompts and conversations
-- Model responses
-- System messages
-
-**Recommendations**:
-- Use only in development/testing environments
-- Don't expose the proxy to untrusted networks
-- Review Phoenix data retention policies
-- Consider adding request body filtering for production use
-
-## Troubleshooting
-
-### Phoenix data directory not found
-
-Create the directory before starting:
-```sh
-mkdir -p ~/phoenix-data
-# or
-mkdir -p $PHOENIX_DATA_DIR
-```
-
-### Proxy health check failing
-
-Check if the proxy is running:
-```sh
-curl http://localhost:8082/health
-```
-
-### No traces appearing in Phoenix
-
-1. Verify Phoenix is running: http://localhost:6006
-2. Check proxy logs: `docker compose logs proxy`
-3. Ensure `COLLECTOR_ENDPOINT` is correctly set in docker-compose.yml
-
 ## License
 
-MIT (or specify your license)
+MIT
 
 ## Contributing
 
