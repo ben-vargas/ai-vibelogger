@@ -98,7 +98,7 @@ If your client only honors standard proxy variables, set `HTTP_PROXY` / `HTTPS_P
 | --- | --- | --- |
 | Claude Code | `ANTHROPIC_BASE_URL=http://localhost:8082` | Tested |
 | OpenAI Codex | `OPENAI_BASE_URL=http://localhost:8082/v1` | Tested |
-| Gemini CLI (QuixiAI fork) | `npm install -g github:QuixiAI/gemini-cli` then `gemini --proxy http://localhost:8082 "<prompt>"` | Tested; `--proxy` flag comes from the fork |
+| Gemini CLI (QuixiAI fork) | `npm install -g github:QuixiAI/gemini-cli` then `gemini --base-url http://localhost:8082 "<prompt>"` | Tested; `--base-url` flag comes from the fork |
 | Other OpenAI-compatible SDKs/CLIs | Set `base_url` to `http://localhost:8082/v1` or rely on `HTTP_PROXY` / `HTTPS_PROXY` | Untested; consult client docs |
 
 ### Claude / Claude Code
