@@ -43,6 +43,7 @@ Scoped to: Claude Code, OpenAI Codex, and the QuixiAI fork of Gemini CLI (with `
 2. **Start the services (Daemon Mode)**:
    Run in the background with `-d`:
    ```sh
+   mkdir -p ~/phoenix-data
    docker compose up --build -d
    ```
 
