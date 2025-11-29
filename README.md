@@ -1,6 +1,6 @@
 # Quixi VibeLogger
 
-A lightweight, observable LLM API proxy with built-in tracing for OpenAI, Anthropic, and Google Gemini. Capture and visualize all your LLM traffic using Arize Phoenix. Source: https://github.com/QuixiAI/VibeLogger
+A lightweight, observable LLM API proxy with built-in tracing for OpenAI, Anthropic, and Google Gemini. Capture and visualize all your LLM traffic using Arize Phoenix.
 
 ## Why this exists
 
