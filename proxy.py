@@ -506,8 +506,10 @@ async def handle_openai_request(request):
         if is_chatgpt_request:
             # Codex ChatGPT tokens expect the ChatGPT backend codex endpoint, not api.openai.com
             chatgpt_base = "https://chatgpt.com/backend-api/codex"
+            # Preserve the path after /v1 (e.g., /v1/responses/compact -> /responses/compact)
+            path_suffix = request.path[3:]  # Strip "/v1"
             query = request.rel_url.query_string
-            upstream_url = f"{chatgpt_base}/responses"
+            upstream_url = f"{chatgpt_base}{path_suffix}"
             if query:
                 upstream_url = f"{upstream_url}?{query}"
             logger.info(f"Detected ChatGPT/Codex auth, routing to {upstream_url}")
